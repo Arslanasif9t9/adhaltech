@@ -43,22 +43,26 @@ const BlogSection = () => (
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: i * 0.1, duration: 0.4 }}
-            className="group glass-card overflow-hidden hover-lift cursor-pointer"
+            whileHover={{ y: -8 }}
+            className="group glass-card overflow-hidden cursor-pointer transition-shadow duration-500 hover:neon-glow-indigo"
           >
-            <div className="h-48 bg-gradient-to-br from-primary/20 to-neon-purple/20 flex items-center justify-center">
-              <span className="text-4xl font-display font-bold text-foreground/20 group-hover:text-foreground/40 transition-colors">
+            <div className="h-48 bg-gradient-to-br from-primary/20 to-neon-purple/20 flex items-center justify-center relative overflow-hidden">
+              <span className="text-4xl font-display font-bold text-foreground/20 group-hover:text-foreground/40 group-hover:scale-110 transition-all duration-500">
                 {post.category}
               </span>
             </div>
             <div className="p-6">
               <span className="text-xs text-muted-foreground">{post.date}</span>
-              <h3 className="font-display text-lg font-semibold text-foreground mt-2 group-hover:text-neon-cyan transition-colors">
+              <h3 className="font-display text-lg font-semibold text-foreground mt-2 group-hover:text-neon-cyan transition-colors duration-300">
                 {post.title}
               </h3>
               <p className="text-muted-foreground text-sm mt-3">{post.preview}</p>
-              <span className="mt-4 inline-flex items-center gap-2 text-sm text-primary group-hover:text-neon-cyan transition-colors">
+              <motion.span
+                whileHover={{ x: 4 }}
+                className="mt-4 inline-flex items-center gap-2 text-sm text-primary group-hover:text-neon-cyan transition-colors"
+              >
                 Read More <ArrowRight size={14} />
-              </span>
+              </motion.span>
             </div>
           </motion.article>
         ))}

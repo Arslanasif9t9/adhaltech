@@ -30,14 +30,15 @@ const TeamSection = () => (
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: i * 0.1, duration: 0.4 }}
-            className="group glass-card p-8 text-center hover-lift"
+            whileHover={{ y: -10, scale: 1.02 }}
+            className="group glass-card p-8 text-center cursor-default transition-shadow duration-500 hover:neon-glow-indigo"
           >
-            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-neon-cyan via-primary to-neon-purple mx-auto mb-5 flex items-center justify-center">
+            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-neon-cyan via-primary to-neon-purple mx-auto mb-5 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
               <span className="font-display text-xl font-bold text-primary-foreground">{member.initials}</span>
             </div>
             <h3 className="font-display text-lg font-semibold text-foreground">{member.name}</h3>
             <p className="text-sm text-neon-cyan mt-1">{member.role}</p>
-            <div className="mt-4 opacity-0 group-hover:opacity-100 transition-opacity">
+            <div className="mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
               <Linkedin className="w-5 h-5 text-muted-foreground hover:text-primary mx-auto cursor-pointer transition-colors" />
             </div>
           </motion.div>

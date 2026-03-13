@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useRef, MouseEvent } from "react";
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { ExternalLink } from "lucide-react";
 
 const categories = ["All", "E-commerce", "SaaS", "IoT", "Web Apps", "Mobile Apps"];
@@ -18,6 +18,35 @@ const projects = [
   { title: "TravelWise", category: "Mobile Apps", desc: "AI-powered travel planning and booking.", color: "from-primary/20 to-neon-purple/20" },
   { title: "DataPulse Analytics", category: "SaaS", desc: "Business intelligence and data visualization.", color: "from-neon-purple/20 to-neon-cyan/20" },
 ];
+
+const TiltCard = ({ children, className }: { children: React.ReactNode; className?: string }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [6, -6]), { stiffness: 300, damping: 30 });
+  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-6, 6]), { stiffness: 300, damping: 30 });
+
+  const handleMouse = (e: MouseEvent) => {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    x.set((e.clientX - rect.left) / rect.width - 0.5);
+    y.set((e.clientY - rect.top) / rect.height - 0.5);
+  };
+
+  const reset = () => { x.set(0); y.set(0); };
+
+  return (
+    <motion.div
+      ref={ref}
+      onMouseMove={handleMouse}
+      onMouseLeave={reset}
+      style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+};
 
 const PortfolioSection = () => {
   const [active, setActive] = useState("All");
@@ -39,9 +68,11 @@ const PortfolioSection = () => {
         {/* Filters */}
         <div className="flex flex-wrap justify-center gap-3 mb-12">
           {categories.map((cat) => (
-            <button
+            <motion.button
               key={cat}
               onClick={() => setActive(cat)}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               className={`px-5 py-2 rounded-full text-sm font-display transition-all duration-300 ${
                 active === cat
                   ? "bg-primary text-primary-foreground neon-glow-indigo"
@@ -49,12 +80,12 @@ const PortfolioSection = () => {
               }`}
             >
               {cat}
-            </button>
+            </motion.button>
           ))}
         </div>
 
         {/* Grid */}
-        <motion.div layout className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <motion.div layout className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" style={{ perspective: "1000px" }}>
           <AnimatePresence mode="popLayout">
             {filtered.map((p) => (
               <motion.div
@@ -64,22 +95,26 @@ const PortfolioSection = () => {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.3 }}
-                className="group glass-card overflow-hidden hover-lift cursor-pointer"
               >
-                <div className={`h-48 bg-gradient-to-br ${p.color} flex items-center justify-center`}>
-                  <span className="font-display text-2xl font-bold text-foreground/30 group-hover:text-foreground/60 transition-colors">
-                    {p.title.charAt(0)}
-                  </span>
-                </div>
-                <div className="p-5">
-                  <span className="text-xs text-neon-cyan font-display uppercase tracking-wider">{p.category}</span>
-                  <h3 className="font-display text-lg font-semibold text-foreground mt-1">{p.title}</h3>
-                  <p className="text-muted-foreground text-sm mt-2">{p.desc}</p>
-                  <button className="mt-4 inline-flex items-center gap-2 text-sm text-primary hover:text-neon-cyan transition-colors">
-                    <span>Preview</span>
-                    <ExternalLink size={14} />
-                  </button>
-                </div>
+                <TiltCard className="group glass-card overflow-hidden cursor-pointer transition-shadow duration-500 hover:neon-glow-indigo">
+                  <div className={`h-48 bg-gradient-to-br ${p.color} flex items-center justify-center relative overflow-hidden`}>
+                    <span className="font-display text-5xl font-bold text-foreground/10 group-hover:text-foreground/25 group-hover:scale-125 transition-all duration-500">
+                      {p.title.charAt(0)}
+                    </span>
+                  </div>
+                  <div className="p-5">
+                    <span className="text-xs text-neon-cyan font-display uppercase tracking-wider">{p.category}</span>
+                    <h3 className="font-display text-lg font-semibold text-foreground mt-1">{p.title}</h3>
+                    <p className="text-muted-foreground text-sm mt-2">{p.desc}</p>
+                    <motion.button
+                      whileHover={{ x: 4 }}
+                      className="mt-4 inline-flex items-center gap-2 text-sm text-primary hover:text-neon-cyan transition-colors"
+                    >
+                      <span>Preview</span>
+                      <ExternalLink size={14} />
+                    </motion.button>
+                  </div>
+                </TiltCard>
               </motion.div>
             ))}
           </AnimatePresence>

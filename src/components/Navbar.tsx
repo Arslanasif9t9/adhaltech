@@ -39,13 +39,14 @@ const Navbar = () => {
 
           <div className="hidden md:flex items-center gap-8">
             {navItems.map((item) => (
-              <a
+              <motion.a
                 key={item.href}
                 href={item.href}
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-200"
+                whileHover={{ y: -2 }}
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-200 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-px after:bg-primary after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300 after:origin-left"
               >
                 {item.label}
-              </a>
+              </motion.a>
             ))}
           </div>
 
@@ -66,15 +67,18 @@ const Navbar = () => {
             exit={{ opacity: 0, y: -20 }}
             className="fixed inset-0 z-40 bg-background/95 backdrop-blur-xl pt-20 flex flex-col items-center gap-6 md:hidden"
           >
-            {navItems.map((item) => (
-              <a
+            {navItems.map((item, i) => (
+              <motion.a
                 key={item.href}
                 href={item.href}
                 onClick={() => setMobileOpen(false)}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.05 }}
                 className="font-display text-2xl text-foreground hover:text-primary transition-colors"
               >
                 {item.label}
-              </a>
+              </motion.a>
             ))}
           </motion.div>
         )}
