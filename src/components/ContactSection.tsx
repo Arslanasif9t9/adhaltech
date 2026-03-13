@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Send, Mail, MapPin, Phone } from "lucide-react";
+import { Send, Mail, Globe, MessageSquare } from "lucide-react";
 import { toast } from "sonner";
 
 const ContactSection = () => {
@@ -48,15 +48,19 @@ const ContactSection = () => {
             <div className="space-y-6">
               {[
                 { icon: Mail, label: "arslanahmadt58@gmail.com" },
-                { icon: MapPin, label: "London, UK · Lahore, PK" },
-                { icon: Phone, label: "+44 (0) 20 1234 5678" },
+                { icon: Globe, label: "Fully Remote — Serving Clients Worldwide" },
+                { icon: MessageSquare, label: "Available 24/7 for Consultations" },
               ].map(({ icon: Icon, label }) => (
-                <div key={label} className="flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                    <Icon className="w-5 h-5 text-primary" />
+                <motion.div
+                  key={label}
+                  whileHover={{ x: 6 }}
+                  className="flex items-center gap-4 group cursor-default"
+                >
+                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center group-hover:neon-glow-indigo transition-shadow duration-300">
+                    <Icon className="w-5 h-5 text-primary group-hover:text-neon-cyan transition-colors duration-300" />
                   </div>
                   <span className="text-foreground text-sm">{label}</span>
-                </div>
+                </motion.div>
               ))}
             </div>
           </motion.div>
@@ -90,14 +94,16 @@ const ContactSection = () => {
               rows={5}
               className="w-full bg-secondary/50 border border-border rounded-lg px-4 py-3 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary focus:neon-glow-indigo transition-all duration-300 resize-none"
             />
-            <button
+            <motion.button
               type="submit"
               disabled={sending}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
               className="w-full py-3 rounded-lg bg-primary text-primary-foreground font-display font-semibold flex items-center justify-center gap-2 hover:opacity-90 transition-opacity neon-glow-indigo disabled:opacity-50"
             >
               {sending ? "Sending..." : "Send Message"}
               <Send size={16} />
-            </button>
+            </motion.button>
           </motion.form>
         </div>
       </div>

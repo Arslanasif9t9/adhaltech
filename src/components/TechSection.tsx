@@ -28,6 +28,7 @@ const TechSection = () => (
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: i * 0.03, duration: 0.4 }}
+            whileHover={{ scale: 1.1, y: -4 }}
             className="glass-card px-5 py-3 font-display text-sm text-foreground hover:text-neon-cyan hover:neon-glow-cyan transition-all duration-300 cursor-default animate-float"
             style={{ animationDelay: `${i * 0.3}s` }}
           >
