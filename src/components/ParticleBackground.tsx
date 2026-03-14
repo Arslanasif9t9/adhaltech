@@ -94,7 +94,7 @@ const ParticleBackground = () => {
         if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
 
         const alpha = 0.4 + Math.sin(p.pulse) * 0.3;
-        const glowSize = p.size + Math.sin(p.pulse) * 1;
+        const glowSize = Math.max(0.1, p.size + Math.sin(p.pulse) * 1);
 
         // Glow
         ctx.beginPath();
