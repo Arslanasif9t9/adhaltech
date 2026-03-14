@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Send, Mail, Globe, MessageSquare } from "lucide-react";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 const ContactSection = () => {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
@@ -14,11 +15,19 @@ const ContactSection = () => {
       return;
     }
     setSending(true);
-    // Placeholder — backend will be connected later
-    await new Promise((r) => setTimeout(r, 1000));
-    toast.success("Message sent successfully! We'll be in touch soon.");
-    setForm({ name: "", email: "", message: "" });
-    setSending(false);
+    try {
+      const { data, error } = await supabase.functions.invoke("send-contact-email", {
+        body: { name: form.name, email: form.email, message: form.message },
+      });
+      if (error) throw error;
+      toast.success("Message sent successfully! We'll be in touch soon.");
+      setForm({ name: "", email: "", message: "" });
+    } catch (err: any) {
+      console.error("Contact form error:", err);
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
