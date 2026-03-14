@@ -8,19 +8,23 @@ import TeamSection from "@/components/TeamSection";
 import BlogSection from "@/components/BlogSection";
 import ContactSection from "@/components/ContactSection";
 import FooterSection from "@/components/FooterSection";
+import ParticleBackground from "@/components/ParticleBackground";
 
 const Index = () => (
-  <div className="min-h-screen bg-background">
-    <Navbar />
-    <HeroSection />
-    <AboutSection />
-    <ServicesSection />
-    <PortfolioSection />
-    <TechSection />
-    <TeamSection />
-    <BlogSection />
-    <ContactSection />
-    <FooterSection />
+  <div className="min-h-screen bg-background relative">
+    <ParticleBackground />
+    <div className="relative z-10">
+      <Navbar />
+      <HeroSection />
+      <AboutSection />
+      <ServicesSection />
+      <PortfolioSection />
+      <TechSection />
+      <TeamSection />
+      <BlogSection />
+      <ContactSection />
+      <FooterSection />
+    </div>
   </div>
 );
 
